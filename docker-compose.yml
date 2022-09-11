@@ -1,0 +1,8 @@
+version: '3.7'
+services:
+  discord:
+    build: .
+    container_name: 'discord'
+    command: python3 main.py
+    volumes:
+      - .:/usr/src/app

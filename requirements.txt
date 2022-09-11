@@ -1,0 +1,8 @@
+typing_extensions
+discord.py
+python-dotenv
+beautifulsoup4
+requests
+watchdog
+peewee
+pymysql
