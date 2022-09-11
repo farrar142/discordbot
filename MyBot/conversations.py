@@ -30,4 +30,8 @@ async def 사용자(ctx:Context):
 @app.command()
 async def 호출횟수(ctx:Context):
     user:User = User.get(id=ctx.author.id)
-    await ctx.send(user.call)
+    await ctx.send(f"{user.call}")
+
+@app.command()
+async def 코드(ctx:Context):
+    await ctx.send(app.formatter.multiple_code_block("import os\nos.getenv('test','none')"))

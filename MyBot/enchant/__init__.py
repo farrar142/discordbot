@@ -26,13 +26,13 @@ class Enchant:
         
         if enchants[0].select('td')[0].attrs.get('class')==None:
             for idx,enchant in enumerate(enchants):
-                enchant_name = enchant.select('td')[2].text
-                enchant_rank = enchant.select('td')[1].text
+                enchant_name = f"**{enchant.select('td')[2].text}**\n"
+                enchant_rank = f"{enchant.select('td')[1].text}"
                 enchant_descs = enchant.select('div')
                 result.append(enchant_name)
                 result.append(enchant_rank)
-                for desc in enchant_descs:
-                    result.append(desc.text)
+                for idx,desc in enumerate(enchant_descs):
+                    result.append(f"> {desc.text}")
                 if idx < len(enchants):
                     result.append("")
         else:
