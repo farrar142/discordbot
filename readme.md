@@ -9,6 +9,6 @@ DB_NAME=DB_NAME
 ```
 
 2. 개발서버 with watchdog
-   python3 main.py
+   - > python3 main.py
 3. 프로덕션 서버
-   python3 exec.py
+   - > python3 exec.py
