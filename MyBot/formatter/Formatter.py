@@ -1,27 +1,41 @@
-class Formatter:
+class Formatter(str):
+    def __call__(self,text:str):
+        self = Formatter(text)
+        return self
     
-    def italic(self,text:str):
-        return f"*{text}*"
+    def new_line(self,text=""):
+        target = self if not text else text
+        return target+"\n"
     
-    def bold(self,text:str):
-        return f"**{text}**"
+    def italic(self,text:str=""):
+        target = self if not text else text
+        return Formatter(f"*{target}*")
     
-    def underline(self,text:str):
-        return f"__{text}__"
+    def bold(self,text:str=""):
+        target = self if not text else text
+        return Formatter(f"**{target}**")
     
-    def striket_hrough(self,text:str):
-        return f"~~{text}~~"
+    def underline(self,text:str=""):
+        target = self if not text else text
+        return Formatter(f"__{target}__")
     
-    def hide(self,text:str):
-        return f"||{text}||"
+    def striket_hrough(self,text:str=""):
+        target = self if not text else text
+        return Formatter(f"~~{target}~~")
     
-    def single_block(self,text:str):
-        return f"> {text}"
+    def hide(self,text:str=""):
+        target = self if not text else text
+        return Formatter(f"||{target}||")
     
-    def single_code_block(self,text:str):
-        return f"`{text}`"
+    def single_block(self,text:str=""):
+        target = self if not text else text
+        return Formatter(f"> {target}")
+    
+    def single_code_block(self,text:str=""):
+        target = self if not text else text
+        return Formatter(f"`{target}`")
     
     def multiple_code_block(self,text:str,code="python"):
-        return f"""```{code}
+        return Formatter(f"""```{code}
 {text}
-```"""
+```""")
