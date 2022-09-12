@@ -4,36 +4,53 @@ class Formatter(str):
         return self
     
     def new_line(self,text=""):
-        target = self if not text else text
-        return target+"\n"
+        if text:
+            return Formatter(self+text+"\n")
+        else:
+            return Formatter(self+"\n")
     
     def italic(self,text:str=""):
-        target = self if not text else text
-        return Formatter(f"*{target}*")
+        if text:
+            return Formatter(f"{self}*{text}*")
+        else:
+            return Formatter(f"*{self}*")
+            
     
     def bold(self,text:str=""):
-        target = self if not text else text
-        return Formatter(f"**{target}**")
+        if text:
+            return Formatter(f"{self}**{text}**")
+        else:
+            return Formatter(f"**{self}**")
     
     def underline(self,text:str=""):
-        target = self if not text else text
-        return Formatter(f"__{target}__")
+        if text:
+            return Formatter(f"{self}__{text}__")
+        else:
+            return Formatter(f"__{self}__")
     
     def striket_hrough(self,text:str=""):
-        target = self if not text else text
-        return Formatter(f"~~{target}~~")
+        if text:
+            return Formatter(f"{self}~~{text}~~")
+        else:
+            return Formatter(f"~~{self}~~")
     
     def hide(self,text:str=""):
-        target = self if not text else text
-        return Formatter(f"||{target}||")
+        if text:
+            return Formatter(f"{self}||{text}||")
+        else:
+            return Formatter(f"||{self}||")
     
     def single_block(self,text:str=""):
-        target = self if not text else text
-        return Formatter(f"> {target}")
+        if text:
+            return Formatter(f"{self}> {text}")
+        else:
+            return Formatter(f"> {self}")
     
     def single_code_block(self,text:str=""):
-        target = self if not text else text
-        return Formatter(f"`{target}`")
+        if text:
+            return Formatter(f"{self}`{text}`")
+        else:
+            return Formatter(f"`{self}`")
     
     def multiple_code_block(self,text:str,code="python"):
         return Formatter(f"""```{code}

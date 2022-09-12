@@ -10,6 +10,7 @@ class GiveChurrResult(TypedDict):
     hungry: int
     churr:int
     intimacy:int
+    amount:int
 
 class Interaction:
     def __init__(self,ctx:Context):
@@ -27,9 +28,9 @@ class Interaction:
             self.cat.refresh()
             self.intimacy.refresh()
             self.user.refresh()
-            return GiveChurrResult(cat=self.cat,hungry=self.cat.hungry,intimacy=self.intimacy.intimacy,churr=self.user.call,result=True) # type: ignore
+            return GiveChurrResult(amount=amount,cat=self.cat,hungry=self.cat.hungry,intimacy=self.intimacy.intimacy,churr=self.user.call,result=True) # type: ignore
         else:
-            return GiveChurrResult(cat=self.cat,hungry=self.cat.hungry,intimacy=self.intimacy.intimacy,churr=self.user.call,result=False) # type: ignore
+            return GiveChurrResult(amount=amount,cat=self.cat,hungry=self.cat.hungry,intimacy=self.intimacy.intimacy,churr=self.user.call,result=False) # type: ignore
         
 class SpeakMeow:
     def __init__(self,user:User,cat:Cat,intimacy:Intimacy):

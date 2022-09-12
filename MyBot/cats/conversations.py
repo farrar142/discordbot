@@ -43,9 +43,10 @@ async def 배고프니(ctx:Context):
     hungry= app.formatter(f"배고픔 : {interaction.cat.hungry}").new_line()
     intimacy = app.formatter(f"친밀도 : {interaction.intimacy.intimacy}").new_line()
     if interaction.cat.is_hungry:
-        speak = app.formatter(f"야옹!").bold().italic().new_line()
-        status = app.formatter.single_block(f"{interaction.cat.name}은(는) 배고파보인다").new_line()
+        speak = (app.formatter(f"야옹!").bold().italic().new_line()
+                 .single_block(f"{interaction.cat.name}은(는) 배고파보인다").new_line())
     else:
-        speak = app.formatter.bold(f"애옹?").italic().new_line()
-        status = app.formatter.single_block(f"{interaction.cat.name}은(는) 배고파보이지 않는다").new_line()
-    await ctx.send(speak+status+hungry+intimacy)
+        speak = (app.formatter.bold(f"애옹?")
+                 .italic().new_line()
+                 .single_block(f"{interaction.cat.name}은(는) 배고파보이지 않는다").new_line())
+    await ctx.send(speak+hungry+intimacy)
