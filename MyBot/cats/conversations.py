@@ -29,22 +29,19 @@ async def 츄르주기(ctx:Context):
         await ctx.send(f"에에에에옹!")
         await ctx.send(msg)
     else:
-        await ctx.send("애옹?")
+        await ctx.send("애옹?   ")
 
 @app.command()
 async def 친밀도(ctx:Context):
-    user = app.get_author(ctx)
-    cat = Cat.get_default_cat()
-    intimacy = Intimacy.get_intimacy(user_id=user.id,cat_id=cat.id)
-    await ctx.send(f"{app.formatter.bold(cat.name)}와(과)의 친밀도")
-    await ctx.send(app.formatter.single_block(f"{intimacy.intimacy}"))
+    interaction = Interaction(ctx)
+    await ctx.send(f"{app.formatter.bold(interaction.cat.name)}와(과)의 친밀도")
+    await ctx.send(app.formatter.single_block(f"{interaction.intimacy.intimacy}"))
     
 @app.command()
 async def 배고프니(ctx:Context):
-    cat = Cat.get_default_cat()
-    intimacy = Intimacy.get_intimacy_from_ctx(ctx)
-    if cat.is_hungry:
-        await ctx.send(f"에옹? 배고픔:{cat.hungry} 친밀도:{intimacy.intimacy}")
+    interaction = Interaction(ctx)
+    if interaction.cat.is_hungry:
+        await ctx.send(f"에옹? 배고픔:{interaction.cat.hungry} 친밀도:{interaction.intimacy.intimacy}")
     else:
-        await ctx.send(f"야옹! 배고픔:{cat.hungry} 친밀도:{intimacy.intimacy}")
+        await ctx.send(f"야옹! 배고픔:{interaction.cat.hungry} 친밀도:{interaction.intimacy.intimacy}")
         

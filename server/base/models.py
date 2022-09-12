@@ -9,7 +9,11 @@ class BaseModel(Model):
     created_at=DateTimeField(default=datetime.now)
     """Base Model for MySQL"""
     class Meta:
-      database=mysql_db
+        database=mysql_db
       
     def refresh(self):
-        self=type(self).get_by_id(self.id)
+        newer_self = self.get_by_id(self.id)
+        for field_name in self._meta.fields.keys():
+            val = getattr(newer_self, field_name)
+            setattr(self, field_name, val)
+        self._dirty.clear()

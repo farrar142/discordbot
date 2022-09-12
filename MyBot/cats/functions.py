@@ -24,7 +24,10 @@ class Interaction:
             self.cat.decrease_hungry(amount=amount)
             self.intimacy.increase_intimacy(amount=amount)
             self.user.decrease_churr(amount=amount)
-            return GiveChurrResult(cat=self.cat,hungry=self.cat.hungry-amount,intimacy=self.intimacy.intimacy+amount,churr=self.user.call-amount,result=True) # type: ignore
+            self.cat.refresh()
+            self.intimacy.refresh()
+            self.user.refresh()
+            return GiveChurrResult(cat=self.cat,hungry=self.cat.hungry,intimacy=self.intimacy.intimacy,churr=self.user.call,result=True) # type: ignore
         else:
             return GiveChurrResult(cat=self.cat,hungry=self.cat.hungry,intimacy=self.intimacy.intimacy,churr=self.user.call,result=False) # type: ignore
         
