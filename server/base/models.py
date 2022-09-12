@@ -5,8 +5,11 @@ from server.base.settings import mysql_db
 
 class BaseModel(Model):
     formatter=Formatter()
-    id = BigAutoField(primary_key=True)
-    created_at = DateTimeField(default=datetime.now)
+    id=BigAutoField(primary_key=True)
+    created_at=DateTimeField(default=datetime.now)
     """Base Model for MySQL"""
     class Meta:
       database=mysql_db
+      
+    def refresh(self):
+        self=type(self).get_by_id(self.id)
