@@ -1,12 +1,15 @@
 import dotenv,subprocess
 import discord
 from typing import Dict, TypedDict,Union
-from discord.ext import commands
+from discord.ext import commands,tasks
+from discord.ext.commands.context import Context
 from MyBot.formatter.Formatter import Formatter
 from server import User
 from server.guilds.models import Guild
 from server.history.models import History
 from server.attachments.models import Attachment
+from server.cats.models import Cat
+
 dotenv.load_dotenv()
 
 class MyBot(commands.Bot):
@@ -32,3 +35,12 @@ class MyBot(commands.Bot):
             Guild.get_or_update(id=msg.guild.id,name=msg.guild.name)
             History.create(guild_id=msg.guild.id,user_id=user.id,text=msg.content)
         return cmd
+    
+    def get_author(self,ctx:Context):
+        return ctx.author
+    
+    @tasks.loop(seconds=60.0)
+    async def increase_hungry(self):
+        cats = Cat.call_all()
+        for cat in cats:
+            cat.increase_hungry()

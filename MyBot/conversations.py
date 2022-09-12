@@ -12,12 +12,6 @@ async def 야옹(ctx:Context):
     await ctx.send("야옹")
 
 @app.command()
-async def 넌누구니(ctx:Context):
-    global accumulated
-    accumulated +=1
-    await ctx.send(f"야옹{accumulated}")    
-
-@app.command()
 async def 물어(ctx:Context):
     # print(dir(app))
     # print(app.all_commands)
@@ -33,5 +27,8 @@ async def 호출횟수(ctx:Context):
     await ctx.send(f"{user.call}")
 
 @app.command()
-async def 코드(ctx:Context):
-    await ctx.send(app.formatter.multiple_code_block("import os\nos.getenv('test','none')"))
+async def 종료(ctx:Context):
+    await ctx.send("종료중")
+    guild = ctx.guild
+    if guild:
+        await guild.leave()
