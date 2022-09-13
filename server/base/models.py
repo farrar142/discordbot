@@ -13,7 +13,7 @@ class BaseModel(Model):
       
     def refresh(self):
         newer_self = self.get_by_id(self.id)
-        for field_name in self._meta.fields.keys():
+        for field_name in self._meta.fields.keys(): # type: ignore
             val = getattr(newer_self, field_name)
             setattr(self, field_name, val)
         self._dirty.clear()

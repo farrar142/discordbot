@@ -5,7 +5,6 @@ from discord.ext import commands,tasks
 from discord.ext.commands.context import Context
 from MyBot.formatter.Formatter import Formatter
 from server import User
-from server.guilds.models import Guild
 from server.history.models import History
 from server.attachments.models import Attachment
 from server.cats.models import Cat
@@ -32,7 +31,7 @@ class MyBot(commands.Bot):
             print(f"{attach=}")
             Attachment._create(id=attach.id,user_id=user.id,filename=attach.filename,url=attach.url)
         if msg.guild:
-            Guild.get_or_update(id=msg.guild.id,name=msg.guild.name)
+            Cat.cat_factory(msg.guild.id)
             History.create(guild_id=msg.guild.id,user_id=user.id,text=msg.content)
         return cmd
     

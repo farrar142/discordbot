@@ -40,8 +40,6 @@ class User(BaseModel):
     def create(cls,id:int,name:str):
         instance = super().create(id=id,name=name)
         instance.save()
-        cat = Cat.get_default_cat()
-        intimacy = Intimacy.create(user_id=instance.id,cat_id=cat.id)
         return instance
 
     @classmethod
@@ -74,11 +72,19 @@ class Intimacy(BaseModel):
     @classmethod
     def get_intimacy_from_ctx(cls,ctx:Context):
         user = ctx.author
-        cat = Cat.get_default_cat()
-        return cls.get_intimacy(cat_id=cat.id,user_id=user.id)
+        guild = ctx.guild
+        if guild:
+            return cls.get_intimacy(cat_id=guild.id,user_id=user.id)
+        else:
+            cat = Cat.get_cat_from_ctx(ctx)
+            return cls.get_intimacy(cat_id=cat.id,user_id=user.id)
         
     
     @classmethod
     def get_intimacy(cls,cat_id:int,user_id:int):
-        intimacy:Intimacy = cls.get(cat=cat_id,user=user_id)
-        return intimacy
+        intimacy:Union[Intimacy,None] = cls.get_or_none(cat=cat_id,user=user_id)
+        if intimacy:
+            return intimacy
+        else:
+            instance = cls.create(cat_id=cat_id,user_id=user_id)
+            return instance
