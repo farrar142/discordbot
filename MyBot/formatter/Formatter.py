@@ -7,16 +7,14 @@ class T(str):
 def new_line_checker(cb):
     def wrapper(formatter,*args,**kwargs):
         if formatter.is_new_lined:
-            print(f"{formatter.is_new_lined}")
-            no_new_lined:List[Formatter] = formatter.lines[0:-2]
+            prev:List[Formatter] = formatter.lines[0:-1]
             new_lines:Formatter = formatter.lines[-1]
             instance=  cb(new_lines,*args,**kwargs)
             instance.is_new_lined = True
-            no_new_lined.append(instance)
-            result = Formatter(''.join(no_new_lined))
+            prev.append(instance)
+            result = Formatter(''.join(prev))
             result.is_new_lined = True
-            result.lines = no_new_lined
-            print(f"new Lined {result}+{instance}")
+            result.lines = prev
             return result
         else:            
             instance=  cb(formatter,*args,**kwargs)
@@ -43,24 +41,17 @@ class Formatter(str):
             return Formatter(f"{cb(*args,**kwargs)}").bold().single_block().new_line()
         return wrapper
         
-    @new_line_checker
-    def new_line(self,text=""):
+    def new_line(self):
         self.is_new_lined = True
-        if text:
-            result =  Formatter(self+text+"\n")
-        else:
-            result =  Formatter(self+"\n")
-        self.lines.append(result)
-        new_lines = Formatter('')
-        new_lines.is_new_lined = True
-        self.lines.append(new_lines)
-        
-        result.is_new_lined = True
-        result.lines = self.lines
+        result = Formatter(''.join(self)+"\n")
+        new = Formatter("")
+        result.lines = [result,new]
+        result.is_new_lined=True
         return result
     
     @new_line_checker
     def append(self,text=""):
+        print(f"{self=},{text=}")
         return Formatter(self+text)
     
     @new_line_checker
@@ -116,4 +107,9 @@ class Formatter(str):
         return Formatter(f"""```{code}
 {text}
 ```""")
-        
+
+def debug(string:Formatter):
+    print(f"{string.lines=},{string}")
+
+string = Formatter("뉴라인").new_line().append("볼드").bold().new_line()
+debug(string)

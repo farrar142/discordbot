@@ -1,9 +1,10 @@
 import dotenv,subprocess
-import discord
 from typing import Dict, TypedDict,Union
+import discord
 from discord.ext import commands,tasks
 from discord.ext.commands.context import Context
 from MyBot.formatter.Formatter import Formatter
+from MyBot.interfaces import CTX
 from server import User
 from server.history.models import History
 from server.attachments.models import Attachment
@@ -23,8 +24,7 @@ class MyBot(commands.Bot):
 
     def get_context(self,*args,**kwargs):
         cmd = super().get_context(*args,**kwargs)
-        print(args,kwargs)
-        msg:discord.Message = args[0]
+        msg:CTX = args[0]
         user = msg.author
         User.update_call(id=user.id,name=user.name)
         for attach in msg.attachments:
@@ -43,3 +43,4 @@ class MyBot(commands.Bot):
         cats = Cat.call_all()
         for cat in cats:
             cat.increase_hungry()
+           

@@ -5,6 +5,7 @@ from server.messages.models import Message
 from server.cats.models import Cat,CatSerializer
 from consts import COMMAND_PREFIX
 from MyBot.cats.functions import Interaction
+from MyBot.interfaces import CTX
 
 
 @app.command()
@@ -15,7 +16,7 @@ async def 넌누구니(ctx:Context):
     await ctx.send(f"야옹? \n{_msg})")
     
 @app.command()
-async def 너의이름은(ctx:Context,name:str):
+async def 너의이름은(ctx:CTX,name:str):
     interaction = Interaction(ctx)
     name_before = f"{interaction.cat.name}"
     interaction.너의이름은(name)
@@ -27,14 +28,17 @@ async def 너의이름은(ctx:Context,name:str):
     await ctx.send(interaction.meow.enthusiastic())
 
 @app.command()
-async def 내츄르(ctx:Context):
+async def 내츄르(ctx:CTX):
     user:User = User.get_user_from_ctx(ctx)
     await ctx.send(f"가지고 있는 츄르: {user.call}개")
     
 @app.command()
-async def 츄르주기(ctx:Context,args:int=1):
+async def 츄르주기(ctx:CTX,args:int=1):
     amount = 1 if not args else args
     interaction = Interaction(ctx)
+    if interaction.user.call <amount:
+        await ctx.send(f"츄르가 {amount-interaction.user.call}개 모잘라요!")
+        return
     result = interaction.give_churr(amount=amount)
     if result.get('result'):
         msg = (app.formatter(f"{result.get('cat').name}").bold()
@@ -45,13 +49,13 @@ async def 츄르주기(ctx:Context,args:int=1):
         await ctx.send("애옹?   ")
 
 @app.command()
-async def 친밀도(ctx:Context):
+async def 친밀도(ctx:CTX):
     interaction = Interaction(ctx)
     await ctx.send(f"{app.formatter.bold(f'{interaction.cat.name}')}와(과)의 친밀도")
     await ctx.send(app.formatter.single_block(f"{interaction.intimacy.intimacy}"))
     
 @app.command()
-async def 배고프니(ctx:Context):
+async def 배고프니(ctx:CTX):
     interaction = Interaction(ctx)
     hungry= app.formatter(f"배고픔 : {interaction.cat.hungry}").new_line().append(f"친밀도 : {interaction.intimacy.intimacy}").new_line()
     if interaction.cat.is_hungry:
@@ -61,8 +65,3 @@ async def 배고프니(ctx:Context):
         speak = interaction.meow.curious()
         speak += app.formatter.single_block(f"{interaction.cat.name}은(는) 배고파보이지 않는다").new_line()
     await ctx.send(speak+hungry)
-    
-@app.command()
-async def 뉴라인(ctx:Context):
-    msg = app.formatter("뉴라인 볼드").bold().new_line().append("이탤릭온리").italic().bold()
-    await ctx.send(msg)

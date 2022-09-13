@@ -1,9 +1,9 @@
 from discord.ext.commands.context import Context
 from MyBot.formatter.Formatter import Formatter
+from MyBot.interfaces import CTX
 from server.cats.models import Cat
-
+from typing import Optional, TypedDict
 from server.users.models import Intimacy, User
-from typing import TypedDict
 
 class GiveChurrResult(TypedDict):
     cat:Cat
@@ -12,10 +12,11 @@ class GiveChurrResult(TypedDict):
     churr:int
     intimacy:int
     amount:int
+    message:str
 
 class Interaction:
     formatter=Formatter()
-    def __init__(self,ctx:Context):
+    def __init__(self,ctx:CTX):
         self.ctx = ctx
         self.user = User.get_user_from_ctx(ctx)
         self.cat = Cat.get_cat_from_ctx(ctx)

@@ -23,6 +23,8 @@ class Cat(BaseModel):
     def decrease_hungry(self,amount=1):
         if self.hungry<= 0:
             return
+        if self.hungry - amount < 0:
+            amount = self.hungry
         query = Cat.update(hungry=self.hungry-amount).where(Cat.id == self.id)
         query.execute() # type: ignore
         
