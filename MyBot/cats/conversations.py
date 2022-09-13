@@ -20,12 +20,13 @@ async def 내츄르(ctx:Context):
     await ctx.send(f"가지고 있는 츄르: {user.call}개")
     
 @app.command()
-async def 츄르주기(ctx:Context):
+async def 츄르주기(ctx:Context,args:int=1):
+    amount = 1 if not args else args
     interaction = Interaction(ctx)
-    result = interaction.give_churr(amount=1)
+    result = interaction.give_churr(amount=amount)
     if result.get('result'):
-        name = app.formatter.bold(result.get('cat').name)
-        msg = app.formatter.single_block(f"{name}(이)가 츄르를 맛있게 먹었다\n공복도 : {result.get('hungry')}\n친밀도 + 1")
+        msg = (app.formatter(result.get('cat').name).bold()
+               .append(f"(이)가 츄르를 맛있게 먹었다\n공복도 : {result.get('hungry')}\n친밀도 + {amount}")).single_block()
         await ctx.send(f"에에에에옹!")
         await ctx.send(msg)
     else:

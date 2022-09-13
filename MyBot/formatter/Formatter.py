@@ -1,13 +1,40 @@
+from typing import List
+from typing_extensions import Self
+
+def new_line_checker(cb):
+    def wrapper(*args,**kwargs):
+        print(args,kwargs)
+        return cb(*args,**kwargs)
+    return wrapper
 class Formatter(str):
+    lines:List[Self] = []
+    is_new_lined = False
+    
     def __call__(self,text:str):
         self = Formatter(text)
         return self
     
-    def new_line(self,text=""):
-        if text:
-            return Formatter(self+text+"\n")
+    def get_new_line(self):
+        if self.is_new_lined:
+            return self.lines[len(self.lines)-1]
         else:
-            return Formatter(self+"\n")
+            return self
+        
+        
+    def new_line(self,text=""):
+        self.is_new_lined = True
+        if text:
+            result =  Formatter(self+text+"\n")
+        else:
+            result =  Formatter(self+"\n")
+        self.lines.append(result)
+        new_lines = Formatter('')
+        new_lines.is_new_lined = True
+        self.lines.append(new_lines)
+        return result
+    
+    def append(self,text=""):
+        return Formatter(self+text)
     
     def italic(self,text:str=""):
         if text:
@@ -56,3 +83,4 @@ class Formatter(str):
         return Formatter(f"""```{code}
 {text}
 ```""")
+        
